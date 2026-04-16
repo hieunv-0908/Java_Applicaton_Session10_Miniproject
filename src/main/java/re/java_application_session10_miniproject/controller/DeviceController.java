@@ -11,6 +11,11 @@ import re.java_application_session10_miniproject.service.DeviceService;
 public class DeviceController {
     private final DeviceService deviceService;
 
+    @GetMapping("/")
+    public String test(Model model) {
+        return "layout/main-layout";
+    }
+
     @Autowired
     public DeviceController(DeviceService deviceService) {
         this.deviceService = deviceService;
