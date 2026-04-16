@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký mượn thiết bị</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        .form-label {
+            font-weight: 600;
+        }
+        .card {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            border: 1px solid rgba(0, 0, 0, 0.125);
+        }
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">Đăng ký mượn thiết bị</h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- Success Message -->
+                        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                            <span th:text="${success}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+
+                        <!-- Error Message -->
+                        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <span th:text="${error}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+
+                        <form th:action="@{/borrow}" th:object="${request}" method="post" novalidate>
+                            <input type="hidden" th:field="*{deviceId}" />
+                            
+                            <!-- Full Name -->
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label">Họ và tên *</label>
+                                <input type="text" class="form-control" th:field="*{fullName}" 
+                                       th:classappend="${#fields.hasErrors('fullName')} ? 'is-invalid' : ''" 
+                                       placeholder="Nhập họ và tên của bạn">
+                                <div class="error-message" th:if="${#fields.hasErrors('fullName')}" 
+                                     th:errors="*{fullName}"></div>
+                            </div>
+
+                            <!-- Student Code -->
+                            <div class="mb-3">
+                                <label for="studentCode" class="form-label">Mã sinh viên *</label>
+                                <input type="text" class="form-control" th:field="*{studentCode}" 
+                                       th:classappend="${#fields.hasErrors('studentCode')} ? 'is-invalid' : ''" 
+                                       placeholder="VD: SE123456">
+                                <div class="error-message" th:if="${#fields.hasErrors('studentCode')}" 
+                                     th:errors="*{studentCode}"></div>
+                                <div class="form-text">Bắt đầu bằng 2 chữ cái theo sau là số</div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email *</label>
+                                <input type="email" class="form-control" th:field="*{email}" 
+                                       th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''" 
+                                       placeholder="email@example.com">
+                                <div class="error-message" th:if="${#fields.hasErrors('email')}" 
+                                     th:errors="*{email}"></div>
+                            </div>
+
+                            <!-- Quantity -->
+                            <div class="mb-3">
+                                <label for="quantity" class="form-label">Số lượng *</label>
+                                <input type="number" class="form-control" th:field="*{quantity}" 
+                                       th:classappend="${#fields.hasErrors('quantity')} ? 'is-invalid' : ''" 
+                                       min="1" placeholder="1">
+                                <div class="error-message" th:if="${#fields.hasErrors('quantity')}" 
+                                     th:errors="*{quantity}"></div>
+                            </div>
+
+                            <!-- Borrow Date -->
+                            <div class="mb-3">
+                                <label for="borrowDate" class="form-label">Ngày nhận *</label>
+                                <input type="date" class="form-control" th:field="*{borrowDate}" 
+                                       th:classappend="${#fields.hasErrors('borrowDate')} ? 'is-invalid' : ''">
+                                <div class="error-message" th:if="${#fields.hasErrors('borrowDate')}" 
+                                     th:errors="*{borrowDate}"></div>
+                            </div>
+
+                            <!-- Return Date -->
+                            <div class="mb-3">
+                                <label for="returnDate" class="form-label">Ngày trả</label>
+                                <input type="date" class="form-control" th:field="*{returnDate}" 
+                                       th:classappend="${#fields.hasErrors('returnDate')} ? 'is-invalid' : ''">
+                                <div class="error-message" th:if="${#fields.hasErrors('returnDate')}" 
+                                     th:errors="*{returnDate}"></div>
+                            </div>
+
+                            <!-- Reason -->
+                            <div class="mb-3">
+                                <label for="reason" class="form-label">Lý do mượn *</label>
+                                <textarea class="form-control" th:field="*{reason}" 
+                                          th:classappend="${#fields.hasErrors('reason')} ? 'is-invalid' : ''" 
+                                          rows="3" placeholder="Nhập lý do mượn thiết bị"></textarea>
+                                <div class="error-message" th:if="${#fields.hasErrors('reason')}" 
+                                     th:errors="*{reason}"></div>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="/devices" class="btn btn-secondary me-md-2">Hủy</a>
+                                <button type="submit" class="btn btn-primary">Đăng ký mượn</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Client-side validation for date comparison -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const borrowDate = document.getElementById('borrowDate');
+            const returnDate = document.getElementById('returnDate');
+            
+            function validateDates() {
+                if (borrowDate.value && returnDate.value) {
+                    const borrow = new Date(borrowDate.value);
+                    const returnD = new Date(returnDate.value);
+                    
+                    if (returnD <= borrow) {
+                        returnDate.setCustomValidity('Ngày trả phải sau ngày nhận');
+                    } else {
+                        returnDate.setCustomValidity('');
+                    }
+                }
+            }
+            
+            borrowDate.addEventListener('change', validateDates);
+            returnDate.addEventListener('change', validateDates);
+            
+            // Set minimum date to today for borrow date
+            const today = new Date().toISOString().split('T')[0];
+            borrowDate.setAttribute('min', today);
+        });
+    </script>
+</body>
+</html>

@@ -1,15 +1,13 @@
 package re.java_application_session10_miniproject.controller;
 
-
 import re.java_application_session10_miniproject.model.BorrowRequest;
 import re.java_application_session10_miniproject.model.Device;
-import re.java_application_session10_miniproject.repository.BorrowRequestRepository;
-import re.java_application_session10_miniproject.repository.DeviceRepository;
 import re.java_application_session10_miniproject.service.BorrowRequestService;
 import re.java_application_session10_miniproject.service.DeviceService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin")
@@ -69,7 +67,7 @@ public class AdminController {
 
     @GetMapping("/devices/delete/{id}")
     public String deleteDevice(@PathVariable Long id) {
-        deviceService.delete(id);
+        deviceService.deleteById(id);
         return "redirect:/admin/devices";
     }
 
@@ -80,21 +78,23 @@ public class AdminController {
     }
 
     @GetMapping("/requests/approve/{id}")
-    public String approveRequest(@PathVariable Long id) {
-        BorrowRequest request = borrowRequestService.getById(id);
-        if (request != null) {
-            request.setStatus("APPROVED");
-            borrowRequestService.update(request);
+    public String approveRequest(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            borrowRequestService.approveRequest(id);
+            redirectAttributes.addFlashAttribute("success", "Đã duyệt yêu cầu thành công");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
         return "redirect:/admin/requests";
     }
 
     @GetMapping("/requests/reject/{id}")
-    public String rejectRequest(@PathVariable Long id) {
-        BorrowRequest request = borrowRequestService.getById(id);
-        if (request != null) {
-            request.setStatus("REJECTED");
-            borrowRequestService.update(request);
+    public String rejectRequest(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            borrowRequestService.rejectRequest(id);
+            redirectAttributes.addFlashAttribute("success", "Đã từ chối yêu cầu");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
         return "redirect:/admin/requests";
     }
