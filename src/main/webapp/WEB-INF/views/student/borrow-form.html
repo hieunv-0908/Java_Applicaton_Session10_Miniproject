@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: html_head}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Đăng ký mượn thiết bị</h2>
+
+    <form th:action="@{/borrow/submit}" th:object="${borrowRequestDto}" method="post" class="card p-4 shadow-sm">
+        <input type="hidden" th:field="*{deviceId}" />
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Họ và tên</label>
+                <input type="text" th:field="*{fullName}" class="form-control" th:classappend="${#fields.hasErrors('fullName')} ? 'is-invalid'">
+                <div class="text-danger small" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Mã sinh viên</label>
+                <input type="text" th:field="*{studentCode}" class="form-control" th:classappend="${#fields.hasErrors('studentCode')} ? 'is-invalid'">
+                <div class="text-danger small" th:if="${#fields.hasErrors('studentCode')}" th:errors="*{studentCode}"></div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" th:field="*{email}" class="form-control" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'">
+            <div class="text-danger small" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Số lượng</label>
+                <input type="number" th:field="*{quantity}" class="form-control" th:classappend="${#fields.hasErrors('quantity')} ? 'is-invalid'">
+                <div class="text-danger small" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Ngày mượn</label>
+                <input type="date" th:field="*{borrowDate}" class="form-control" th:classappend="${#fields.hasErrors('borrowDate')} ? 'is-invalid'">
+                <div class="text-danger small" th:if="${#fields.hasErrors('borrowDate')}" th:errors="*{borrowDate}"></div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Ngày trả</label>
+                <input type="date" th:field="*{returnDate}" class="form-control" th:classappend="${#fields.hasErrors('returnDate')} ? 'is-invalid'">
+                <div class="text-danger small" th:if="${#fields.hasErrors('returnDate')}" th:errors="*{returnDate}"></div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Lý do mượn</label>
+            <textarea th:field="*{reason}" class="form-control" rows="3"></textarea>
+            <div class="text-danger small" th:if="${#fields.hasErrors('reason')}" th:errors="*{reason}"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Xác nhận đăng ký</button>
+        <a href="/devices" class="btn btn-secondary">Hủy bỏ</a>
+    </form>
+</div>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>
