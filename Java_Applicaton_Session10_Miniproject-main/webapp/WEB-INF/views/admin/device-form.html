@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Form thiết bị</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container my-4" style="max-width: 800px;">
+  <h2 class="mb-4" th:text="${device.id == null ? 'Thêm thiết bị' : 'Cập nhật thiết bị'}"></h2>
+
+  <form th:action="@{/admin/devices/save}" th:object="${device}" method="post" class="card card-body shadow-sm">
+    <input type="hidden" th:field="*{id}">
+
+    <div class="mb-3">
+      <label class="form-label">Tên thiết bị</label>
+      <input type="text" class="form-control" th:field="*{name}">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Ảnh minh họa</label>
+      <input type="text" class="form-control" th:field="*{imageUrl}" placeholder="https://...">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Số lượng còn lại</label>
+      <input type="number" class="form-control" th:field="*{available}">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Mô tả</label>
+      <textarea class="form-control" rows="4" th:field="*{description}"></textarea>
+    </div>
+
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary" type="submit">Lưu</button>
+      <a class="btn btn-secondary" th:href="@{/admin/devices}">Quay lại</a>
+    </div>
+  </form>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
